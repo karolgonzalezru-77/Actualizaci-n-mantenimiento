@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-1">Cronología de Visitas</h1>
+        <p class="text-muted mb-0">Vista histórica de solo lectura agrupada por ID de mascota.</p>
+    </div>
+    <a href="/" class="btn btn-outline-secondary">Volver al panel</a>
+</div>
+
+<% if (!petsTimeline || petsTimeline.length === 0) { %>
+    <div class="alert alert-light border text-center" role="alert">
+        No hay visitas históricas registradas.
+    </div>
+<% } else { %>
+    <% petsTimeline.forEach(group => { %>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="mb-1 text-primary">Mascota ID: <%= group.pet_id %> - <%= group.pet_name %></h4>
+                <p class="text-muted mb-3">Dueño: <%= group.owner_name %></p>
+
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Servicio</th>
+                                <th>Estado</th>
+                                <th>Peso (kg)</th>
+                                <th>Temperatura (°C)</th>
+                                <th>Diagnóstico</th>
+                                <th>Medicina recetada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% group.visits.forEach(visit => { %>
+                                <tr>
+                                    <td><%= visit.appointment_date %></td>
+                                    <td><%= visit.service %></td>
+                                    <td><%= visit.status %></td>
+                                    <td><%= visit.weight_kg == null ? '-' : visit.weight_kg %></td>
+                                    <td><%= visit.temperature_c == null ? '-' : visit.temperature_c %></td>
+                                    <td><%= visit.diagnosis ? visit.diagnosis : '-' %></td>
+                                    <td><%= visit.prescribed_medication ? visit.prescribed_medication : '-' %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+<% } %>

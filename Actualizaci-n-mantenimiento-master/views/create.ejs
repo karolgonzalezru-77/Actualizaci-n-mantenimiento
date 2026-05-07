@@ -1,0 +1,91 @@
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">Agendar Cita</h2>
+                <form action="/create" method="POST">
+                    <div class="mb-3">
+                        <label for="pet_id" class="form-label">Mascota</label>
+                        <select class="form-control" id="pet_id" name="pet_id" required>
+                            <option value="">Seleccione una mascota...</option>
+                            <% pets.forEach(p => { %>
+                            <option value="<%= p.id %>"><%= p.pet_name %> (Dueño: <%= p.owner_name %>)</option>
+                            <% }); %>
+                        </select>
+                        <small class="text-muted">Solo mascotas registradas con dueño.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="service" class="form-label">Servicio</label>
+                        <select class="form-control" id="service" name="service" required>
+                            <option value="">Seleccione un servicio...</option>
+                            <option value="Consulta Médica">Consulta Médica</option>
+                            <option value="Baño y Perfume">Baño y Perfume</option>
+                            <option value="Corte de Pelo">Corte de Pelo</option>
+                            <option value="Limpieza de Oídos">Limpieza de Oídos</option>
+                            <option value="Corte de Uñas">Corte de Uñas</option>
+                            <option value="Spa Completo">Spa Completo</option>
+                        </select>
+                    </div>
+                    <div id="medicalFields" class="mb-3 d-none">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="weight_kg" class="form-label">Peso (kg)</label>
+                                <input type="number" step="0.01" min="0" class="form-control" id="weight_kg" name="weight_kg" placeholder="Ej. 12.5">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="temperature_c" class="form-label">Temperatura (°C)</label>
+                                <input type="number" step="0.1" min="0" class="form-control" id="temperature_c" name="temperature_c" placeholder="Ej. 38.5">
+                            </div>
+                            <div class="col-12">
+                                <label for="diagnosis" class="form-label">Diagnóstico</label>
+                                <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" placeholder="Describa el diagnóstico"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="prescribed_medication" class="form-label">Medicina recetada</label>
+                                <textarea class="form-control" id="prescribed_medication" name="prescribed_medication" rows="2" placeholder="Ej. Amoxicilina 250mg cada 12 horas por 7 días"></textarea>
+                            </div>
+                        </div>
+                        <small class="text-muted">Campos obligatorios solo para consultas médicas.</small>
+                    </div>
+                    <div class="mb-4">
+                        <label for="appointment_date" class="form-label">Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="appointment_date" name="appointment_date" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Programar Cita</button>
+                        <a href="/" class="btn btn-link text-muted">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const serviceEl = document.getElementById('service');
+        const medicalFieldsEl = document.getElementById('medicalFields');
+        const weightEl = document.getElementById('weight_kg');
+        const tempEl = document.getElementById('temperature_c');
+        const diagnosisEl = document.getElementById('diagnosis');
+        const medicationEl = document.getElementById('prescribed_medication');
+
+        function applyMedicalRules() {
+            const isMedical = (serviceEl.value || '').trim() === 'Consulta Médica';
+            medicalFieldsEl.classList.toggle('d-none', !isMedical);
+            weightEl.required = isMedical;
+            tempEl.required = isMedical;
+            diagnosisEl.required = isMedical;
+            medicationEl.required = isMedical;
+            if (!isMedical) {
+                weightEl.value = '';
+                tempEl.value = '';
+                diagnosisEl.value = '';
+                medicationEl.value = '';
+            }
+        }
+
+        serviceEl.addEventListener('change', applyMedicalRules);
+        applyMedicalRules();
+    })();
+</script>

@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2">Historial Clínico: <%= pet.name %></h1>
+        <p class="text-muted mb-0"><strong>Dueño:</strong> <%= pet.owner_name %> | <strong>Especie/Raza:</strong> <%= pet.species %> <%= pet.breed ? '- ' + pet.breed : '' %></p>
+    </div>
+    <a href="/pets" class="btn btn-secondary">Volver</a>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <% if (appointments.length === 0) { %>
+            <div class="alert alert-info">Esta mascota no tiene historial médico registrado.</div>
+        <% } else { %>
+            <div class="timeline">
+                <% appointments.forEach(app => { %>
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                            <strong><%= new Date(app.appointment_date).toLocaleString('es-ES') %></strong>
+                            <span class="badge bg-light text-dark"><%= app.service %></span>
+                        </div>
+                        <div class="card-body">
+                            <% if (app.service === 'Consulta Médica') { %>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <strong>Peso:</strong> <%= app.weight_kg ? app.weight_kg + ' kg' : 'N/A' %>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Temperatura:</strong> <%= app.temperature_c ? app.temperature_c + ' °C' : 'N/A' %>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Diagnóstico:</strong>
+                                    <div class="bg-light p-2 rounded mt-1 border"><%= app.diagnosis || 'Sin diagnóstico registrado' %></div>
+                                </div>
+                                <div>
+                                    <strong>Medicina Recetada:</strong>
+                                    <div class="bg-light p-2 rounded mt-1 border"><%= app.prescription || 'Ninguna' %></div>
+                                </div>
+                            <% } else { %>
+                                <p class="text-muted mb-0">Servicio de rutina sin anotaciones médicas detalladas.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</div>

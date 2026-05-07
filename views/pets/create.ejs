@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">Registrar Mascota</h2>
+                <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+                <% } %>
+                <form action="/pets/new" method="POST">
+                    <div class="mb-3">
+                        <label for="owner_id" class="form-label">Dueño (obligatorio)</label>
+                        <select class="form-control" id="owner_id" name="owner_id" required>
+                            <option value="">Seleccione un dueño...</option>
+                            <% owners.forEach(o => { %>
+                            <option value="<%= o.id %>"><%= o.name %></option>
+                            <% }); %>
+                        </select>
+                        <small class="text-muted">La mascota debe estar vinculada a un dueño registrado.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre de la mascota</label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Ej: Toby">
+                    </div>
+                    <div class="mb-3">
+                        <label for="species" class="form-label">Especie</label>
+                        <select class="form-control" id="species" name="species">
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="breed" class="form-label">Raza</label>
+                        <input type="text" class="form-control" id="breed" name="breed" placeholder="Ej: Labrador">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Mascota</button>
+                        <a href="/pets" class="btn btn-link text-muted">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

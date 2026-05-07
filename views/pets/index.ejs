@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Mascotas</h1>
+    <a href="/pets/new" class="btn btn-primary">Nueva Mascota</a>
+</div>
+
+<% if (typeof query !== 'undefined' && query.msg) { %>
+<div class="alert alert-info"><%= query.msg %></div>
+<% } %>
+
+<div class="row">
+    <% if (pets.length === 0) { %>
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">No hay mascotas registradas.</p>
+        <a href="/pets/new" class="btn btn-primary">Registrar mascota</a>
+    </div>
+    <% } else { %>
+    <% pets.forEach(pet => { %>
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-primary"><%= pet.name %></h5>
+                <p class="card-text mb-1"><strong>Dueño:</strong> <%= pet.owner_name %></p>
+                <p class="card-text mb-3"><strong>Especie/Raza:</strong> <%= pet.species %> <%= pet.breed ? '- ' + pet.breed : '' %></p>
+                <a href="/pets/<%= pet.id %>/history" class="btn btn-sm btn-outline-info">Ver Historial Clínico</a>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+    <% } %>
+</div>

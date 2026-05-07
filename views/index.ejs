@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2">Panel de Citas</h1>
+    <a href="/create" class="btn btn-primary">Nueva Cita</a>
+</div>
+
+<div class="row">
+    <% if (appointments.length===0) { %>
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No hay citas programadas.</p>
+        </div>
+        <% } else { %>
+            <% appointments.forEach(app=> { %>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="card-title text-primary">
+                                    <%= app.pet_name %>
+                                </h5>
+                                <span class="badge bg-soft-primary text-primary" style="background-color: #e0e0ff;">
+                                    <%= app.status %>
+                                </span>
+                            </div>
+                            <p class="card-text mb-1"><strong>Dueño:</strong>
+                                <%= app.owner_name %>
+                            </p>
+                            <p class="card-text mb-1"><strong>Servicio:</strong>
+                                <%= app.service %>
+                            </p>
+                            <p class="card-text mb-3"><strong>Fecha:</strong>
+                                <%= app.appointment_date %>
+                            </p>
+
+                            <form action="/delete/<%= app.id %>" method="POST"
+                                onsubmit="return confirm('¿Eliminar esta cita?')">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } %>
+</div>

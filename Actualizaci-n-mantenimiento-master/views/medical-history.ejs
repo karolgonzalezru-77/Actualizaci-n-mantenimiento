@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-1">Expediente Médico</h1>
+        <p class="text-muted mb-0">Historial clínico por paciente.</p>
+    </div>
+    <a href="/" class="btn btn-outline-secondary">Volver al panel</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="/medical-history" class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label for="pet_id" class="form-label">Filtrar por paciente</label>
+                <select id="pet_id" name="pet_id" class="form-select">
+                    <option value="">Todos los pacientes</option>
+                    <% pets.forEach(pet => { %>
+                        <option value="<%= pet.id %>" <%= String(selectedPetId) === String(pet.id) ? 'selected' : '' %>>
+                            ID <%= pet.id %> - <%= pet.pet_name %> (Dueño: <%= pet.owner_name %>)
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col-md-4 d-grid">
+                <button type="submit" class="btn btn-primary">Ver historial</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% if (!historyByPet || historyByPet.length === 0) { %>
+    <div class="alert alert-light border text-center" role="alert">
+        No hay registros médicos para el filtro seleccionado.
+    </div>
+<% } else { %>
+    <% historyByPet.forEach(group => { %>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="mb-1 text-primary">Paciente ID: <%= group.pet_id %> - <%= group.pet_name %></h4>
+                <p class="text-muted mb-3">Responsable: <%= group.owner_name %></p>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha de consulta</th>
+                                <th>Servicio</th>
+                                <th>Peso (kg)</th>
+                                <th>Temperatura (°C)</th>
+                                <th>Diagnóstico</th>
+                                <th>Medicina recetada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% group.visits.forEach(visit => { %>
+                                <tr>
+                                    <td><%= visit.appointment_date %></td>
+                                    <td><%= visit.service %></td>
+                                    <td><%= visit.weight_kg == null ? '-' : visit.weight_kg %></td>
+                                    <td><%= visit.temperature_c == null ? '-' : visit.temperature_c %></td>
+                                    <td><%= visit.diagnosis ? visit.diagnosis : '-' %></td>
+                                    <td><%= visit.prescribed_medication ? visit.prescribed_medication : '-' %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+<% } %>
