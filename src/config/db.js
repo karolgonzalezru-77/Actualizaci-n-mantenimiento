@@ -3,7 +3,7 @@
  * Tablas: owners, pets, appointments, users
  */
 require('dotenv').config();
-const initSqlJs = require('sql.js');
+const initSqlJs = require('sql.js/dist/sql-asm.js');
 const crypto = require('crypto');
 
 function hashPassword(password) {
